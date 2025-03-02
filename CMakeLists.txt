@@ -2,7 +2,7 @@ set( PROJECT_NAME vks )
 
 project( ${PROJECT_NAME} )
 
-file( GLOB VKS_SRCS "${CMAKE_CURRENT_LIST_DIR}/*.cpp" )
+file( GLOB VKS_SRCS "${CMAKE_CURRENT_LIST_DIR}/src/*.cpp" )
 
 add_library( ${PROJECT_NAME} STATIC "${VKS_SRCS}" )
 set_property( TARGET ${PROJECT_NAME} PROPERTY CXX_STANDARD 20 )
