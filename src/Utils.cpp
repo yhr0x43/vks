@@ -15,7 +15,7 @@ std::string statusString(VkResult result) noexcept
 
     switch (result)
     {
-#define STR(r) case  ##r: return #r
+#define STR(r) case (r): return #r
         STR(VK_SUCCESS);
         STR(VK_NOT_READY);
         STR(VK_TIMEOUT);

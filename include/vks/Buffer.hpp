@@ -2,11 +2,12 @@
 
 #include <vulkan/vulkan.h>
 
-#include "vks/Device.hpp"
 #include "vks/VulkanEncapsulate.hpp"
 
 namespace vks
 {
+class Device;
+
 class Buffer : public VulkanEncapsulate<VkBuffer>
 {
 	Device const& m_Device;

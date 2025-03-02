@@ -1,5 +1,6 @@
 #include "vks/Inits.hpp"
 #include "vks/Utils.hpp"
+#include "vks/Device.hpp"
 
 #include "vks/Buffer.hpp"
 
@@ -36,7 +37,7 @@ Buffer::Buffer(
 	if (data != nullptr)
 	{
 		VK_CHK(Map(size));
-		memcpy(m_pMapped, data, size);
+		CopyData(data, size);
 		/* manual flush when COHERENT bit is not requested */
 		if (!(memoryPropertyFlags & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT))
 		{
@@ -71,6 +72,10 @@ VkResult Buffer::Flush(VkDeviceSize size, VkDeviceSize offset) const noexcept
 
 VkResult Buffer::Map(VkDeviceSize size, VkDeviceSize offset, VkMemoryMapFlags flags) noexcept
 {
+	if (m_pMapped)
+	{
+		spdlog::warn("Map a mapped buffer");
+	}
 	return vkMapMemory(m_Device, m_Memory, offset, size, flags, &m_pMapped);
 }
 
@@ -80,6 +85,10 @@ void Buffer::Unmap(void) noexcept
 	{
 		vkUnmapMemory(m_Device, m_Memory);
 		m_pMapped = nullptr;
+	}
+	else
+	{
+		spdlog::warn("Unmapping an unmapped buffer");
 	}
 }
 
@@ -92,7 +101,7 @@ void Buffer::CopyData(const void* data, size_t size) noexcept
 void Buffer::CopyFrom(vks::Buffer& src, std::optional<VkBufferCopy> bufferCopy) const noexcept
 {
 	VkCommandBufferAllocateInfo cmdBufAllocateInfo =
-		vks::inits::commandBufferAllocateInfo(m_Device.GetCommandPool(), VK_COMMAND_BUFFER_LEVEL_PRIMARY, 1);
+		vks::inits::commandBufferAllocateInfo(m_Device.m_CmdPool, VK_COMMAND_BUFFER_LEVEL_PRIMARY, 1);
 	VkCommandBuffer copyCmd;
 	VK_CHK(vkAllocateCommandBuffers(m_Device, &cmdBufAllocateInfo, &copyCmd));
 
@@ -108,5 +117,7 @@ void Buffer::CopyFrom(vks::Buffer& src, std::optional<VkBufferCopy> bufferCopy) 
 	VK_CHK(vkEndCommandBuffer(copyCmd));
 
 	m_Device.SubmitCommandBuffer(copyCmd, queue);
+
+	vkFreeCommandBuffers(m_Device, m_Device.m_CmdPool, 1, &copyCmd);
 }
 }

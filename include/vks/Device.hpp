@@ -6,6 +6,7 @@
 
 #include <vulkan/vulkan.h>
 
+#include "vks/Buffer.hpp"
 #include "vks/VulkanEncapsulate.hpp"
 
 namespace vks
@@ -21,14 +22,13 @@ class Device : public VulkanEncapsulate<VkDevice>
 	std::vector<std::string> m_SupportedExtensions;
 
 	/* this command pool is created with graphics queue, for buffer operation that needs a command pool */
-	VkCommandPool m_CommandPool;
-	//friend void Buffer::CopyFrom(Buffer& src, std::optional<VkBufferCopy> bufferCopy) const noexcept;
+	VkCommandPool m_CmdPool;
+	friend void Buffer::CopyFrom(Buffer& src, std::optional<VkBufferCopy> bufferCopy) const noexcept;
 
 	std::optional<uint32_t> GetQueueFamilyIndex(VkQueueFlags queueFlags) const noexcept;
 
 public:
 	VkPhysicalDevice const& GetPhysicalDevice(void) const noexcept;
-	VkCommandPool const& GetCommandPool(void) const noexcept;
 	bool ExtensionSupported(const std::string& name) const noexcept;
 	void SubmitCommandBuffer(VkCommandBuffer commandBuffer, VkQueue queue) const noexcept;
 	std::optional<VkFormat> SupportedDepthStencilFormat(void) const noexcept;

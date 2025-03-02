@@ -300,30 +300,6 @@ inline VkDescriptorPoolCreateInfo descriptorPoolCreateInfo(
 	return descriptorPoolInfo;
 }
 
-inline VkDescriptorPoolSize descriptorPoolSize(
-	VkDescriptorType type,
-	uint32_t descriptorCount)
-{
-	VkDescriptorPoolSize descriptorPoolSize{};
-	descriptorPoolSize.type = type;
-	descriptorPoolSize.descriptorCount = descriptorCount;
-	return descriptorPoolSize;
-}
-
-inline VkDescriptorSetLayoutBinding descriptorSetLayoutBinding(
-	VkDescriptorType type,
-	VkShaderStageFlags stageFlags,
-	uint32_t binding,
-	uint32_t descriptorCount = 1)
-{
-	VkDescriptorSetLayoutBinding setLayoutBinding{};
-	setLayoutBinding.descriptorType = type;
-	setLayoutBinding.stageFlags = stageFlags;
-	setLayoutBinding.binding = binding;
-	setLayoutBinding.descriptorCount = descriptorCount;
-	return setLayoutBinding;
-}
-
 inline VkDescriptorSetLayoutCreateInfo descriptorSetLayoutCreateInfo(
 	const VkDescriptorSetLayoutBinding* pBindings,
 	uint32_t bindingCount)
@@ -378,15 +354,6 @@ inline VkDescriptorSetAllocateInfo descriptorSetAllocateInfo(
 	return descriptorSetAllocateInfo;
 }
 
-inline VkDescriptorImageInfo descriptorImageInfo(VkSampler sampler, VkImageView imageView, VkImageLayout imageLayout)
-{
-	VkDescriptorImageInfo descriptorImageInfo{};
-	descriptorImageInfo.sampler = sampler;
-	descriptorImageInfo.imageView = imageView;
-	descriptorImageInfo.imageLayout = imageLayout;
-	return descriptorImageInfo;
-}
-
 inline VkWriteDescriptorSet writeDescriptorSet(
 	VkDescriptorSet dstSet,
 	VkDescriptorType type,
@@ -419,32 +386,6 @@ inline VkWriteDescriptorSet writeDescriptorSet(
 	writeDescriptorSet.pImageInfo = imageInfo;
 	writeDescriptorSet.descriptorCount = descriptorCount;
 	return writeDescriptorSet;
-}
-
-inline VkVertexInputBindingDescription vertexInputBindingDescription(
-	uint32_t binding,
-	uint32_t stride,
-	VkVertexInputRate inputRate)
-{
-	VkVertexInputBindingDescription vInputBindDescription{};
-	vInputBindDescription.binding = binding;
-	vInputBindDescription.stride = stride;
-	vInputBindDescription.inputRate = inputRate;
-	return vInputBindDescription;
-}
-
-inline VkVertexInputAttributeDescription vertexInputAttributeDescription(
-	uint32_t binding,
-	uint32_t location,
-	VkFormat format,
-	uint32_t offset)
-{
-	VkVertexInputAttributeDescription vInputAttribDescription{};
-	vInputAttribDescription.location = location;
-	vInputAttribDescription.binding = binding;
-	vInputAttribDescription.format = format;
-	vInputAttribDescription.offset = offset;
-	return vInputAttribDescription;
 }
 
 inline VkPipelineVertexInputStateCreateInfo pipelineVertexInputStateCreateInfo()
@@ -498,16 +439,6 @@ inline VkPipelineRasterizationStateCreateInfo pipelineRasterizationStateCreateIn
 	pipelineRasterizationStateCreateInfo.depthClampEnable = VK_FALSE;
 	pipelineRasterizationStateCreateInfo.lineWidth = 1.0f;
 	return pipelineRasterizationStateCreateInfo;
-}
-
-inline VkPipelineColorBlendAttachmentState pipelineColorBlendAttachmentState(
-	VkColorComponentFlags colorWriteMask,
-	VkBool32 blendEnable)
-{
-	VkPipelineColorBlendAttachmentState pipelineColorBlendAttachmentState{};
-	pipelineColorBlendAttachmentState.colorWriteMask = colorWriteMask;
-	pipelineColorBlendAttachmentState.blendEnable = blendEnable;
-	return pipelineColorBlendAttachmentState;
 }
 
 inline VkPipelineColorBlendStateCreateInfo pipelineColorBlendStateCreateInfo(
@@ -650,38 +581,6 @@ inline VkBindSparseInfo bindSparseInfo()
 	VkBindSparseInfo bindSparseInfo{};
 	bindSparseInfo.sType = VK_STRUCTURE_TYPE_BIND_SPARSE_INFO;
 	return bindSparseInfo;
-}
-
-/** @brief Initialize a map entry for a shader specialization constant */
-inline VkSpecializationMapEntry specializationMapEntry(uint32_t constantID, uint32_t offset, size_t size)
-{
-	VkSpecializationMapEntry specializationMapEntry{};
-	specializationMapEntry.constantID = constantID;
-	specializationMapEntry.offset = offset;
-	specializationMapEntry.size = size;
-	return specializationMapEntry;
-}
-
-/** @brief Initialize a specialization constant info structure to pass to a shader stage */
-inline VkSpecializationInfo specializationInfo(uint32_t mapEntryCount, const VkSpecializationMapEntry* mapEntries, size_t dataSize, const void* data)
-{
-	VkSpecializationInfo specializationInfo{};
-	specializationInfo.mapEntryCount = mapEntryCount;
-	specializationInfo.pMapEntries = mapEntries;
-	specializationInfo.dataSize = dataSize;
-	specializationInfo.pData = data;
-	return specializationInfo;
-}
-
-/** @brief Initialize a specialization constant info structure to pass to a shader stage */
-inline VkSpecializationInfo specializationInfo(const std::vector<VkSpecializationMapEntry>& mapEntries, size_t dataSize, const void* data)
-{
-	VkSpecializationInfo specializationInfo{};
-	specializationInfo.mapEntryCount = static_cast<uint32_t>(mapEntries.size());
-	specializationInfo.pMapEntries = mapEntries.data();
-	specializationInfo.dataSize = dataSize;
-	specializationInfo.pData = data;
-	return specializationInfo;
 }
 }
 }
