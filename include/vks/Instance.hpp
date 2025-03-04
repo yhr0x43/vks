@@ -15,17 +15,17 @@ namespace vks
 */
 class Instance : public VulkanEncapsulate<VkInstance>
 {
-	/** @brief fetched supported instance extensions */
-	std::vector<std::string> m_SupportedExtensions;
+    /** @brief fetched supported instance extensions */
+    std::vector<std::string> m_SupportedExtensions;
 
 public:
-	bool ExtensionSupported(const std::string& name);
+    bool ExtensionSupported(const std::string& name);
 
-	Instance(
-		VkApplicationInfo appInfo,
-		bool validation = true,
-		std::vector<const char*> enabledExtensions = {}
-	) noexcept;
-	~Instance(void);
+    Instance(
+        VkApplicationInfo appInfo,
+        bool validation = true,
+        std::vector<const char*> enabledExtensions = {}
+        ) noexcept;
+    ~Instance(void);
 };
 }
